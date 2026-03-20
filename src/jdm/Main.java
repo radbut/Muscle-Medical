@@ -9,7 +9,7 @@ public class Main {
         System.out.println("🚦 JDM Traffic Light Clinical Monitoring System");
         System.out.println("============================================");
 
-        // TODO: You will add database loading here later
+        // TODO: add database loading here later
 
         showMainMenu();
     }
