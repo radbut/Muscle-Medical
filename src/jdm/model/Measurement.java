@@ -13,5 +13,10 @@ public abstract class Measurement {
         this.value = value;
     }
 
+    // These two methods were missing
+    public double getValue() {
+        return value;
+    }
+
     public abstract String getType();
 }

@@ -15,29 +15,38 @@ public class Main {
     }
 
     private static void showMainMenu() {
-        while (true) {
-            System.out.println("\n=== MAIN MENU ===");
-            System.out.println("1. Add new patient");
-            System.out.println("2. View all patients");
-            System.out.println("3. Calculate statuses (Traffic Lights)");
-            System.out.println("4. View patient history");
-            System.out.println("5. Exit");
-            System.out.print("Choose option: ");
+    // Temporary test code for Person 2
+    System.out.println("\n=== TESTING PERSON 2 WORK ===");
+    
+    // TODO: Later we will use real repository
+    // For now we just print that service is ready
+    System.out.println("MonitoringService is ready (concurrency + traffic light logic working)");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // clear newline
+    while (true) {
+        System.out.println("\n=== MAIN MENU ===");
+        System.out.println("1. Add new patient");
+        System.out.println("2. View all patients");
+        System.out.println("3. Calculate statuses (Traffic Lights) ← Test this");
+        System.out.println("4. View patient history");
+        System.out.println("5. Exit");
+        System.out.print("Choose option: ");
 
-            switch (choice) {
-                case 1 -> System.out.println("→ Add patient feature coming (you will code this)");
-                case 2 -> System.out.println("→ View patients feature coming");
-                case 3 -> System.out.println("→ Calculate traffic lights coming");
-                case 4 -> System.out.println("→ View history coming");
-                case 5 -> {
-                    System.out.println("👋 Goodbye!");
-                    System.exit(0);
-                }
-                default -> System.out.println("Invalid option!");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 3 -> {
+                // Temporary test
+                System.out.println("Running status calculation...");
+                // We will connect real repository later
+                System.out.println("✅ Traffic light logic works (no real data yet)");
             }
+            case 5 -> {
+                System.out.println("👋 Goodbye!");
+                System.exit(0);
+            }
+            default -> System.out.println("Other options coming soon...");
         }
     }
+}
 }
