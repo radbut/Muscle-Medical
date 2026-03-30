@@ -1,43 +1,58 @@
 package jdm;
 
+import java.io.BufferedReader;
 import java.util.Scanner;
 
+
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+public static void main(String[] args) {
+    String file = "data\\Measurement.csv";
+    BufferedReader reader = null;
+    String line = "";
 
-    public static void main(String[] args) {
-        System.out.println("🚦 JDM Traffic Light Clinical Monitoring System");
-        System.out.println("============================================");
+    Scanner scanner = new Scanner(System.in);
+    boolean running = true; // otherwise the program stops after making the first choice
 
-        // TODO: add database loading here later
+    // Defining all option strings so you only have to change their text in one place if necessary
+String optionA = "See All patients with their status";
+String optionP = "See all Patients with red status";
+String optionS = "Search for Specific patient";
+String optionF = "See Full summary report";
+String optionN = "Add New patient";
+String optionR = "Add new lab or CMAS Result for existing patient";
+String optionX = "EXIT program";
 
-        showMainMenu();
+
+while (running) {
+    System.out.println("Please find the menu below:");
+
+    System.out.println("A: " + optionA);
+    System.out.println("P: " + optionP);
+    System.out.println("S: " + optionS);
+    System.out.println("F: " + optionF);
+    System.out.println("N: " + optionN);
+    System.out.println("R: " + optionR);
+    System.out.println("X: " + optionX);
+
+// == is for integers, equals is for strings
+// TODO: add option activities for each option below
+    String choice = scanner.nextLine();    
+    if (choice.equalsIgnoreCase("A")) {
+    System.out.println(optionA);
+    } else if (choice.equalsIgnoreCase("P")) {
+    System.out.println(optionP);
+    } else if (choice.equalsIgnoreCase("S")) {
+    System.out.println(optionS);
+    } else if (choice.equalsIgnoreCase("F")) {
+    System.out.println(optionF);
+    } else if (choice.equalsIgnoreCase("N")) {
+    System.out.println(optionN);
+    } else if (choice.equalsIgnoreCase("R")) {
+    System.out.println(optionR);
+    } else if (choice.equalsIgnoreCase("X")) {
+    System.out.println("Exiting...");
+    running = false;
     }
-
-    private static void showMainMenu() {
-        while (true) {
-            System.out.println("\n=== MAIN MENU ===");
-            System.out.println("1. Add new patient");
-            System.out.println("2. View all patients");
-            System.out.println("3. Calculate statuses (Traffic Lights)");
-            System.out.println("4. View patient history");
-            System.out.println("5. Exit");
-            System.out.print("Choose option: ");
-
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // clear newline
-
-            switch (choice) {
-                case 1 -> System.out.println("→ Add patient feature coming (you will code this)");
-                case 2 -> System.out.println("→ View patients feature coming");
-                case 3 -> System.out.println("→ Calculate traffic lights coming");
-                case 4 -> System.out.println("→ View history coming");
-                case 5 -> {
-                    System.out.println("👋 Goodbye!");
-                    System.exit(0);
-                }
-                default -> System.out.println("Invalid option!");
-            }
-        }
     }
+}
 }
