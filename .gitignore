@@ -1,6 +1,10 @@
 git add .gitignore# Compiled class file
 *.class
 
+### macOS ###
+# General
+.DS_Store
+
 # Log file
 *.log
 
