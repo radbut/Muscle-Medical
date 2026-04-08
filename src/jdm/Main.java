@@ -1,6 +1,13 @@
 package jdm;
 
 import java.util.Scanner;
+import java.util.List;
+import java.io.*;  // used for reading CSV files
+import jdm.repository.PatientRepository;
+import jdm.model.TrafficLight;
+import jdm.model.Patient;
+import jdm.model.Measurement.java;
+import jdm.service.MonitoringService;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -9,44 +16,88 @@ public class Main {
         System.out.println("🚦 JDM Traffic Light Clinical Monitoring System");
         System.out.println("============================================");
 
-        // TODO: add database loading here later
+        PatientRepository patientRepository = new PatientRepository();
+        ReportService reportService = new ReportService();
 
-        showMainMenu();
+        showMainMenu(patientRepository, reportService);
     }
 
-    private static void showMainMenu() {
-    // Temporary test code for Person 2
-    System.out.println("\n=== TESTING PERSON 2 WORK ===");
-    
-    // TODO: Later we will use real repository
-    // For now we just print that service is ready
-    System.out.println("MonitoringService is ready (concurrency + traffic light logic working)");
+    private static void showMainMenu(PatientRepository patientRepository, ReportService reportService) {
+        boolean running = true; // otherwise the program stops after making the first choice
 
-    while (true) {
-        System.out.println("\n=== MAIN MENU ===");
-        System.out.println("1. Add new patient");
-        System.out.println("2. View all patients");
-        System.out.println("3. Calculate statuses (Traffic Lights) ← Test this");
-        System.out.println("4. View patient history");
-        System.out.println("5. Exit");
-        System.out.print("Choose option: ");
+        while (running) {
+            System.out.println("\nPlease find the menu below:");
 
-        int choice = scanner.nextInt();
-        scanner.nextLine();
+            System.out.println("A: See All patients with their status");
+            System.out.println("P: See all Patients with red status");
+            System.out.println("S: Search for Specific patient");
+            System.out.println("F: See Full summary report");
+            System.out.println("N: Add New patient");
+            System.out.println("R: Add new lab or CMAS Result for existing patient");
+            System.out.println("X: EXIT program");
+            System.out.println("Enter your option: ");
 
-        switch (choice) {
-            case 3 -> {
-                // Temporary test
-                System.out.println("Running status calculation...");
-                // We will connect real repository later
-                System.out.println("✅ Traffic light logic works (no real data yet)");
+            String choice = scanner.nextLine().toUpperCase();  // Convert to uppercase for easier comparison
+
+            switch (choice) {
+                case "A" -> {  // All patients
+                    List<Patient> patients = patientRepository.getAllPatients();
+                    for (Patient p : patients) {
+                        reportService.generatePatientReport(p);
+                    }
+                }
+                case "P" -> {  // Patients with red status
+                    List<Patient> patients = patientRepository.getAllPatients();
+                    reportService.generateSummaryReport(patients);
+                }
+                case "S" -> {  // Search for specific patient
+                    System.out.println("Enter patient ID: ");
+                    String id = scanner.nextLine();
+
+                    Patient patient = patientRepository.findById(id);
+
+                    if (patient != null) {
+                        reportService.generatePatientReport(patient);
+                    } else {
+                        System.out.println("Patient not found.");
+                    }
+                }
+                case "F" -> {  // Full summary report
+                    List<Patient> patients = patientRepository.getAllPatients();
+                    reportService.generateSummaryReport(patients);
+                }
+                case "N" -> {  // Add new patient
+                    System.out.println("Enter patient name: ");
+                    String name = scanner.nextLine();
+                    System.out.println("Enter patient age: ");
+                    int age = scanner.nextInt();
+                    scanner.nextLine();  // consume newline
+
+                    Patient newPatient = new Patient(name, age);
+                    patientRepository.addPatient(newPatient);
+                    System.out.println("Patient added successfully.");
+                }
+                case "R" -> {  // Add new lab or CMAS result for existing patient
+                    System.out.println("Enter patient ID: ");
+                    String id = scanner.nextLine();
+
+                    Patient patient = patientRepository.findById(id);
+
+                    if (patient != null) {
+                        System.out.println("Enter new lab/CMAS result: ");
+                        String result = scanner.nextLine();
+                        patientRepository.addLabOrCMAS(patient, result);
+                        System.out.println("Result added successfully.");
+                    } else {
+                        System.out.println("Patient not found.");
+                    }
+                }
+            case "X" -> {  // Exiting
+                System.out.println("Exiting...");
+                running = false;
             }
-            case 5 -> {
-                System.out.println("👋 Goodbye!");
-                System.exit(0);
-            }
-            default -> System.out.println("Other options coming soon...");
+            default -> System.out.println("Invalid option. Please try again.");
+        }
         }
     }
-}
 }
