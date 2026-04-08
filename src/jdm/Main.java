@@ -2,15 +2,17 @@ package jdm;
 
 import java.util.Scanner;
 import java.util.List;
-import java.io.*;  // used for reading CSV files
-import jdm.repository.PatientRepository;
-import jdm.model.TrafficLight;
+// import java.io.*;  // used for reading CSV files
+import jdm.repository;
+// import jdm.model.TrafficLight;
 import jdm.model.Patient;
-import jdm.model.Measurement.java;
-import jdm.service.MonitoringService;
+import jdm.model.Measurement;
+// import jdm.service.MonitoringService;
+import jdm.service.ReportService;
+import jdm.util.ArrayList;
 
 public class Main {
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         System.out.println("🚦 JDM Traffic Light Clinical Monitoring System");
@@ -41,13 +43,13 @@ public class Main {
 
             switch (choice) {
                 case "A" -> {  // All patients
-                    List<Patient> patients = patientRepository.getAllPatients();
+                    List<Patient> patients = patientRepository.findAll();  // getAllPatients
                     for (Patient p : patients) {
                         reportService.generatePatientReport(p);
                     }
                 }
-                case "P" -> {  // Patients with red status
-                    List<Patient> patients = patientRepository.getAllPatients();
+                case "P" -> {  // Patients with red status  // TODO: add traffic light status
+                    List<Patient> patients = patientRepository.findAll();
                     reportService.generateSummaryReport(patients);
                 }
                 case "S" -> {  // Search for specific patient
@@ -63,7 +65,7 @@ public class Main {
                     }
                 }
                 case "F" -> {  // Full summary report
-                    List<Patient> patients = patientRepository.getAllPatients();
+                    List<Patient> patients = patientRepository.findAll();
                     reportService.generateSummaryReport(patients);
                 }
                 case "N" -> {  // Add new patient
@@ -74,7 +76,7 @@ public class Main {
                     scanner.nextLine();  // consume newline
 
                     Patient newPatient = new Patient(name, age);
-                    patientRepository.addPatient(newPatient);
+                    patientRepository.save(newPatient);
                     System.out.println("Patient added successfully.");
                 }
                 case "R" -> {  // Add new lab or CMAS result for existing patient
@@ -86,7 +88,7 @@ public class Main {
                     if (patient != null) {
                         System.out.println("Enter new lab/CMAS result: ");
                         String result = scanner.nextLine();
-                        patientRepository.addLabOrCMAS(patient, result);
+                        patientRepository.cmas(patient, result);
                         System.out.println("Result added successfully.");
                     } else {
                         System.out.println("Patient not found.");
