@@ -50,6 +50,32 @@ public class Patient {
         return latest;
     }
 
+    // Calculates and stores the traffic light status based on latest measurements
+    public void calculateStatus() {
+        CMASMeasurement cmas = getLatestCmas();
+        BiomarkerMeasurement cxcl10 = getLatestBiomarker("CXCL10");
+        BiomarkerMeasurement gal9   = getLatestBiomarker("Galectin-9");
+
+        // No data at all = RED for safety
+        if (cmas == null && cxcl10 == null && gal9 == null) {
+            this.status = TrafficLight.RED;
+            return;
+        }
+
+        // Check for any RED condition first
+        if (cmas   != null && cmas.getValue()   < 20)   { this.status = TrafficLight.RED;    return; }
+        if (cxcl10 != null && cxcl10.getValue() > 400)  { this.status = TrafficLight.RED;    return; }
+        if (gal9   != null && gal9.getValue()   > 7000) { this.status = TrafficLight.RED;    return; }
+
+        // Check for any YELLOW condition
+        if (cmas   != null && cmas.getValue()   < 40)   { this.status = TrafficLight.YELLOW; return; }
+        if (cxcl10 != null && cxcl10.getValue() > 200)  { this.status = TrafficLight.YELLOW; return; }
+        if (gal9   != null && gal9.getValue()   > 5500) { this.status = TrafficLight.YELLOW; return; }
+
+        // Everything within safe range
+        this.status = TrafficLight.GREEN;
+    }
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
