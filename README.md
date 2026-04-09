@@ -1,3 +1,27 @@
+### Run the application
+
+**Requirements:** 
+Java 17 or later
+SQLite JDBC driver in lib/
+Project file structure:
+src/ for Java sources
+data/ with Patient.csv, LabResults(EN).csv, Measurement.csv, CMAS.csv
+lib/ containing JDBC jar
+
+**Run file:**
+Run the "run.bat" file - If you are using Windows
+Run the "run.sh" file - If you are using Mac/Linux
+
+#OR
+
+**Terminal:**
+javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
+java -cp "out;lib/*" jdm.Main
+
+
+---
+
+
 # Muscle-Medical
 
 # JDM Traffic Light Clinical Monitoring System
@@ -74,31 +98,6 @@ The dataset consists of **5 relational CSV files** for a single patient (Patient
 > ⚠️ **CMAS.csv is a pivot table** — dates are column headers, not rows. The DataLoader must transpose this when parsing.
 
 
----
-
-
-### Run the application
-
-**Requirements:** 
-Java 17 or later
-SQLite JDBC driver in lib/
-Project file structure:
-src/ for Java sources
-data/ with Patient.csv, LabResults(EN).csv, Measurement.csv, CMAS.csv
-lib/ containing JDBC jar
-
-**Run file:**
-Run the "run.bat" file - If you are using Windows
-Run the "run.sh" file - If you are using Mac/Linux
-
-#OR
-
-**Terminal:**
-javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
-java -cp "out;lib/*" jdm.Main
-
-
-```
 
 ---
 
