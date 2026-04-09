@@ -42,43 +42,7 @@ The application automatically assigns each patient a **Traffic Light status** ba
 | 🟡 Yellow | Monitoring Required | Follow-up recommended |
 | 🔴 Red | Critical | Urgent clinical attention needed |
 
-## 🗂️ Project Structure
 
-```
-muscle-medical/
-├── src/
-│   └── jdm/
-│       ├── Main.java
-│       ├── model/
-│       │   ├── Patient.java
-│       │   ├── Measurement.java          (abstract)
-│       │   ├── BiomarkerMeasurement.java
-│       │   ├── CMASMeasurement.java
-│       │   └── TrafficLight.java
-│       ├── repository/
-│       │   ├── PatientRepository.java    (interface)
-│       │   └── SQLitePatientRepository.java
-│       ├── service/
-│       │   ├── DataLoaderService.java
-│       │   ├── MonitoringService.java
-│       │   └── ReportService.java
-│       └── alert/
-│           ├── Alert.java                (abstract)
-│           ├── StableAlert.java
-│           ├── MonitoringAlert.java
-│           └── CriticalAlert.java
-├── lib/
-│   └── sqlite-jdbc-3.51.3.0.jar
-├── data/
-│   ├── Patient.csv
-│   ├── LabResult.csv
-│   ├── LabResults(EN).csv
-│   ├── LabResultGroup.csv
-│   ├── Measurement.csv
-│   └── CMAS.csv
-├── .gitignore
-└── README.md
-```
 
 ## 📂 Dataset Structure
 
@@ -95,7 +59,6 @@ The dataset consists of **5 relational CSV files** for a single patient (Patient
 
 **Join chain:** `Patient → LabResult (via PatientID) → LabResultGroup (via GroupID) → Measurement (via LabResultID)`
 
-> ⚠️ **CMAS.csv is a pivot table** — dates are column headers, not rows. The DataLoader must transpose this when parsing.
 
 
 
