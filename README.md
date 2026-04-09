@@ -73,65 +73,31 @@ The dataset consists of **5 relational CSV files** for a single patient (Patient
 
 > ⚠️ **CMAS.csv is a pivot table** — dates are column headers, not rows. The DataLoader must transpose this when parsing.
 
-## ⚙️ Prerequisites
-
-| Tool | Version | Download |
-|------|---------|----------|
-| Java (Temurin JDK) | 17 | [adoptium.net](https://adoptium.net/temurin/releases/?version=17) |
-| SQLite JDBC Driver | 3.51.3.0 | [github.com/xerial/sqlite-jdbc](https://github.com/xerial/sqlite-jdbc/releases/latest) |
-| Git | Latest | [git-scm.com](https://git-scm.com/) |
-
-> **Mac users (M1/M2/M3/M4):** Download the `aarch64` JDK package.  
-> **Mac users (Intel):** Download the `x64` JDK package.  
-> **Windows users:** Download the `.msi` installer from the same Adoptium page.
 
 ---
 
-## 🚀 Setup & Installation
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/radbut/Muscle-Medical.git
-cd muscle-medical
-```
+### Run the application
 
-### 2. Add the SQLite driver
-- Download `sqlite-jdbc-3.51.3.0.jar` from the link above.
-- Place it in the `lib/` folder.
+**Requirements:** 
+Java 17 or later
+SQLite JDBC driver in lib/
+Project file structure:
+src/ for Java sources
+data/ with Patient.csv, LabResults(EN).csv, Measurement.csv, CMAS.csv
+lib/ containing JDBC jar
 
-### 3. Place the dataset files
-- Copy all 6 CSV files into the `data/` folder.
+**Run file:**
+Run the "run.bat" file - If you are using Windows
+Run the "run.sh" file - If you are using Mac/Linux
 
-### 4. Open in your IDE
+#OR
 
-**VS Code:**
-1. Install the [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack).
-2. Open the project folder: `File → Open Folder`.
-3. VS Code will auto-detect the Java project.
-4. Add the JAR to your classpath — create `.vscode/settings.json` with:
-```json
-{
-  "java.project.referencedLibraries": ["lib/**/*.jar"]
-}
-```
-
-**IntelliJ IDEA (Community):**
-1. `File → Open` → select the project folder.
-2. Right-click `lib/` → **Add as Library** → OK.
-
-### 5. Run the application
-
-**VS Code:** Open `Main.java` → click **▶ Run** above `main()`.  
-**IntelliJ:** Right-click `Main.java` → **Run 'Main.main()'**.  
 **Terminal:**
-```bash
-# Mac/Linux
-javac -cp lib/sqlite-jdbc-3.51.3.0.jar -d out src/jdm/**/*.java src/jdm/*.java
-java -cp out:lib/sqlite-jdbc-3.51.3.0.jar jdm.Main
+javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
+java -cp "out;lib/*" jdm.Main
 
-# Windows
-javac -cp lib\sqlite-jdbc-3.51.3.0.jar -d out src\jdm\**\*.java src\jdm\*.java
-java -cp out;lib\sqlite-jdbc-3.51.3.0.jar jdm.Main
+
 ```
 
 ---
@@ -140,34 +106,6 @@ java -cp out;lib\sqlite-jdbc-3.51.3.0.jar jdm.Main
 
 The app uses a local **SQLite** database (`jdm.db`) created automatically on first run. No database server installation required — the file is stored in the project root and is listed in `.gitignore`.
 
-## 🧪 Running Tests
-
-Tests are located in `src/test/`. To run:
-```bash
-javac -cp lib/sqlite-jdbc-3.51.3.0.jar -d out src/test/**/*.java
-java -cp out:lib/sqlite-jdbc-3.51.3.0.jar org.junit.runner.JUnitCore [TestClassName]
-```
-
-## 📌 Git Workflow
-
-1. **Never push directly to `main`.**
-2. Create a branch for your feature:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Commit regularly with clear messages:
-   ```bash
-   git commit -m "Add Patient model with getStatus() method"
-   ```
-4. Push your branch and open a **Pull Request** on GitHub.
-5. At least one teammate must review before merging.
-
-### Branch naming convention
-- `feature/model-and-repository`
-- `feature/patient-trafficlight-monitoring`
-- `feature/dataloader-alerts`
-- `feature/reports-and-menu`
-- `fix/cmas-parsing-bug`
 
 ## 📐 Clinical Thresholds (Traffic Light Logic)
 
