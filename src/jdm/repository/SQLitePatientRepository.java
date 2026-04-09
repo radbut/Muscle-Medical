@@ -2,6 +2,7 @@ package jdm.repository;
 
 import jdm.model.BiomarkerMeasurement;
 import jdm.model.CMASMeasurement;
+import jdm.model.Measurement;
 import jdm.model.Patient;
 
 import java.sql.*;
@@ -11,29 +12,29 @@ import java.util.List;
 
 public class SQLitePatientRepository implements PatientRepository {
 
-    private final String dbUrl; //Rostyk>
+    private final String dbUrl; 
     private final boolean useSharedMemory;
-    private Connection sharedConnection; //Rostyk/>
+    private Connection sharedConnection; 
 
     public SQLitePatientRepository(String dbPath) {
-        if (":memory:".equals(dbPath)) {  //Rostyk>
+        if (":memory:".equals(dbPath)) {  
             this.dbUrl = "jdbc:sqlite:file:memdb?mode=memory&cache=shared";
             this.useSharedMemory = true;
         } else {
             this.dbUrl = "jdbc:sqlite:" + dbPath;
             this.useSharedMemory = false;
-        } //Rostyk/>
+        } 
         createTables();
     }
 
     private Connection connect() throws SQLException {
-        if (useSharedMemory) { //Rostyk>
+        if (useSharedMemory) { 
             if (sharedConnection == null || sharedConnection.isClosed()) {
                 sharedConnection = DriverManager.getConnection(dbUrl);
                 sharedConnection.createStatement().execute("PRAGMA foreign_keys = ON;");
             }
             return sharedConnection;
-        } //Rostyk/>
+        } 
         Connection conn = DriverManager.getConnection(dbUrl);
         conn.createStatement().execute("PRAGMA foreign_keys = ON;");
         return conn;
@@ -349,7 +350,56 @@ public class SQLitePatientRepository implements PatientRepository {
         cps.close();
     }
 
-    private void closeConnection(Connection conn) { //Rostyk>
+    @Override
+    public boolean addMeasurement(int patientId, Measurement measurement) {
+        try {
+            Connection conn = connect();
+            conn.setAutoCommit(false);
+
+            if (measurement instanceof BiomarkerMeasurement) {
+                BiomarkerMeasurement bm = (BiomarkerMeasurement) measurement;
+                int labResultId = findOrCreateLabResult(conn, patientId,
+                                                        bm.getType(), bm.getUnit());
+                PreparedStatement mps = conn.prepareStatement(
+                    "INSERT INTO measurements (lab_result_id, datetime, value) VALUES (?, ?, ?);",
+                    Statement.RETURN_GENERATED_KEYS
+                );
+                mps.setInt(1, labResultId);
+                mps.setString(2, bm.getDate().toString());
+                mps.setDouble(3, bm.getValue());
+                mps.executeUpdate();
+                ResultSet mkeys = mps.getGeneratedKeys();
+                if (mkeys.next()) bm.setId(mkeys.getInt(1));
+                bm.setLabResultId(labResultId);
+                mps.close();
+
+            } else if (measurement instanceof CMASMeasurement) {
+                CMASMeasurement cm = (CMASMeasurement) measurement;
+                PreparedStatement cps = conn.prepareStatement(
+                    "INSERT INTO cmas_scores (patient_id, date, score, scale) VALUES (?, ?, ?, ?);",
+                    Statement.RETURN_GENERATED_KEYS
+                );
+                cps.setInt(1, patientId);
+                cps.setString(2, cm.getDate().toString());
+                cps.setDouble(3, cm.getValue());
+                cps.setInt(4, cm.getScale());
+                cps.executeUpdate();
+                ResultSet ckeys = cps.getGeneratedKeys();
+                if (ckeys.next()) cm.setId(ckeys.getInt(1));
+                cps.close();
+            }
+
+            conn.commit();
+            closeConnection(conn);
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Error adding measurement: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private void closeConnection(Connection conn) { 
         if (useSharedMemory) {
             return;
         }
@@ -361,5 +411,5 @@ public class SQLitePatientRepository implements PatientRepository {
             } catch (SQLException ignored) {
             }
         }
-    } //Rostyk/>
+    } 
 }

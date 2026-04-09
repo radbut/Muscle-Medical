@@ -1,6 +1,7 @@
 package jdm.repository;
 
 import jdm.model.Patient;
+import jdm.model.Measurement;
 import java.util.List;
 
 public interface PatientRepository {
@@ -19,4 +20,7 @@ public interface PatientRepository {
 
     // Delete a patient and all their data
     boolean delete(int id);
+
+    // Add a new measurement to an existing patient
+    boolean addMeasurement(int patientId, Measurement measurement);
 }
