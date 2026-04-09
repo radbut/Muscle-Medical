@@ -1,22 +1,22 @@
-### Run the application
+## Run the application
 
 **Requirements:** 
-Java 17 or later
-SQLite JDBC driver in lib/
-Project file structure:
-src/ for Java sources
-data/ with Patient.csv, LabResults(EN).csv, Measurement.csv, CMAS.csv
-lib/ containing JDBC jar
+- Java 17 or later
+- SQLite JDBC driver in lib/
+- Project file structure:
+- src/ for Java sources
+- data/ with Patient.csv, LabResults(EN).csv, Measurement.csv, CMAS.csv
+- lib/ containing JDBC jar
 
-**Run file:**
-Run the "run.bat" file - If you are using Windows
-Run the "run.sh" file - If you are using Mac/Linux
+**Run-file:**
+### Run the "run.bat" file - If you are using Windows
+### Run the "run.sh" file - If you are using Mac/Linux
 
-#OR
+## OR
 
 **Terminal:**
-javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
-java -cp "out;lib/*" jdm.Main
+### javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
+### java -cp "out;lib/*" jdm.Main
 
 
 ---
