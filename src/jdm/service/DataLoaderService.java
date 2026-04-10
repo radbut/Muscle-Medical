@@ -42,6 +42,12 @@ public class DataLoaderService {
             return new LoadingSummary(0, 0, 0, 0);
         }
 
+        // Check if database already has patients to avoid appending duplicates
+        if (!repository.findAll().isEmpty()) {
+            System.out.println("Database already contains patients. Skipping data loading to prevent duplicates.");
+            return new LoadingSummary(0, 0, 0, 0);
+        }
+
         Map<String, Patient> patients = loadPatients(dir.resolve("Patient.csv"));
         Map<String, LabResultInfo> labResults = loadLabResults(dir.resolve("LabResults(EN).csv"), patients);
         int biomarkerCount = loadMeasurements(dir.resolve("Measurement.csv"), labResults, patients);
