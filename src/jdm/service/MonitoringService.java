@@ -9,14 +9,14 @@ import jdm.model.*;
 public class MonitoringService {
 
     // Thresholds (example values, adjust based on clinical guidelines)
-    private static final double CMAS_RED_THRESHOLD = 20.0;
-    private static final double CMAS_YELLOW_THRESHOLD = 35.0;
+    private static final double CMAS_RED_THRESHOLD   = 15.0;
+    private static final double CMAS_YELLOW_THRESHOLD = 48.0;  
 
-    private static final double CXCL10_RED_THRESHOLD = 1000.0;
-    private static final double CXCL10_YELLOW_THRESHOLD = 500.0;
+    private static final double CXCL10_RED_THRESHOLD   = 400.0;
+    private static final double CXCL10_YELLOW_THRESHOLD = 200.0; 
 
-    private static final double GAL9_RED_THRESHOLD = 100.0;
-    private static final double GAL9_YELLOW_THRESHOLD = 50.0;
+    private static final double GAL9_RED_THRESHOLD   = 7000.0;
+    private static final double GAL9_YELLOW_THRESHOLD = 5500.0;
 
     private static final double TNFR2_RED_THRESHOLD = 2000.0;
     private static final double TNFR2_YELLOW_THRESHOLD = 1000.0;
