@@ -18,7 +18,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        System.out.println("🚦 JDM Traffic Light Clinical Monitoring System");
+        System.out.println(" JDM Traffic Light Clinical Monitoring System");
         System.out.println("============================================");
 
         // Load CSV data into the database on startup
@@ -120,7 +120,7 @@ public class Main {
                         Patient patient = patientRepository.findById(id);
 
                         if (patient != null) {
-                            System.out.println("Enter measurement type (e.g., CXCL10, CMAS): ");
+                            System.out.println("Enter measurement type (e.g., CXCL10, CMAS, Galectin-9): ");
                             String type = scanner.nextLine();
                             System.out.println("Enter value: ");
                             double value = Double.parseDouble(scanner.nextLine());
@@ -138,7 +138,7 @@ public class Main {
                                     System.out.println("Failed to add CMAS measurement.");
                                 }
                             } else {
-                                System.out.println("Enter unit: ");
+                                System.out.println("Enter unit (e.g., pg/mL): ");
                                 String unit = scanner.nextLine();
                                 BiomarkerMeasurement biomarker = new BiomarkerMeasurement(0, date, value, type, unit);
                                 if (patientRepository.addMeasurement(id, biomarker)) {
