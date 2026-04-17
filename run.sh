@@ -1,5 +1,6 @@
+#!/bin/bash
 cd "$(dirname "$0")"
 mkdir -p out
-javac -cp "lib/*" -d out src/jdm/Main.java src/jdm/model/*.java src/jdm/repository/*.java src/jdm/service/*.java src/jdm/alert/*.java
+find src/jdm -name "*.java" | xargs javac -cp "lib/*" -d out
 java -cp "out:lib/*" jdm.Main
-read
+read 
